@@ -81,6 +81,10 @@ public class RunScript extends JavaPlugin {
         //Weather events
         new WeatherChange(this);
 
+        if(getFileManager().isUsingCache()) {
+            getFileManager().loadEventsCodeToCache();
+        }
+
         getCommand("rsreload").setExecutor(new RSReloadCmd(this));
     }
 
