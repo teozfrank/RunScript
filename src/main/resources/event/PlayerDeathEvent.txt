@@ -1,0 +1,8 @@
+import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
+
+Player player = playerDeathEvent.getEntity();
+String playerName = player.getName();
+
+player.getWorld().strikeLightning(player.getLocation());
+playerDeathEvent.setDeathMessage(ChatColor.YELLOW + playerName + ChatColor.RED + " Died ahhhh!");
