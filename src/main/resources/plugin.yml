@@ -1,5 +1,11 @@
 name: RunScript
-version: 0.2.4
+version: 0.3
 author: teozfrank
 description: run scripts in minecraft using java syntax
 main: com.github.teozfrank.runscript.main.RunScript
+commands:
+    rsreload:
+        description: reload the config and text files if cache is enabled
+        usage: /<command>
+        permission: runscript.reload
+        permission-message: you cannot use this command!

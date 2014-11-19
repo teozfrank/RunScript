@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -40,11 +41,140 @@ import java.util.zip.ZipInputStream;
 public class FileManager {
 
     private RunScript plugin;
+    private HashMap<String, String> cachedCode;
+    private List<File> eventFiles;
 
     public FileManager(RunScript plugin) {
         this.plugin = plugin;
+        cachedCode = new HashMap<String, String>();
+        eventFiles = new ArrayList<File>();
+        setupEventFiles();
     }
 
+    /**
+     * get the cached code stored for a file name
+     * @param fileName the file name of the code to get from
+     * @return the cached code to pass to the interpreter
+     */
+    public String getCachedCode(String fileName) {
+        return cachedCode.get(fileName);
+    }
+
+    /**
+     * add an event file to the file list
+     * @param file the file
+     */
+    public void addEventFile(File file) {
+        eventFiles.add(file);
+    }
+
+    /**
+     * add cached code to the cache
+     * @param fileName the file name
+     * @param eventCode the code as a string
+     */
+    public void addCachedCode(String fileName, String eventCode) {
+        cachedCode.put(fileName, eventCode);
+    }
+
+    /**
+     * get and event file by the file name
+     * @param fileName the name of the file
+     * @return the file if exists, returns null if it does not
+     */
+    public File getEventFileByName(String fileName) {
+        for(File file: getEventFiles()) {
+            if(file.getName().equals(fileName)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * setup the event files adding them to the list of files
+     */
+    private void setupEventFiles() {
+        addEventFile(new File(Util.eventBlockPath, "BlockBreakEvent.txt"));
+        addEventFile(new File(Util.eventBlockPath, "BlockBurnEvent.txt"));
+        addEventFile(new File(Util.eventEntityPath, "CreatureSpawnEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "AsyncPlayerChatEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerCommandPreprocessEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerDeathEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerInteractEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerJoinEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerKickEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerLoginEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerMoveEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerPickupItemEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerQuitEvent.txt"));
+        addEventFile(new File(Util.eventPlayerPath, "PlayerTeleportEvent.txt"));
+        addEventFile(new File(Util.eventWeatherPath, "WeatherChangeEvent.txt"));
+    }
+
+    /**
+     * get a list of the event files
+     * @returna list of files
+     */
+    public List<File> getEventFiles() {
+        return eventFiles;
+    }
+
+    /**
+     * load the events text files contents to the cache
+     */
+    public void loadEventsCodeToCache() {
+
+        for(File file: getEventFiles()) {
+            List<String> stringList = getStringList(file);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (String string : stringList) {
+                stringBuilder.append(string);
+            }
+            if(plugin.isDebugEnabled()) {
+                SendConsoleMessage.debug("adding event code with filename: " + file.getName());
+            }
+            addCachedCode(file.getName(), stringBuilder.toString());
+        }
+
+    }
+
+    /**
+     * reload the events text file contents
+     */
+    public void reloadEventsCode() {
+        if(!cachedCode.isEmpty()) {
+            if(plugin.isDebugEnabled()) {
+                SendConsoleMessage.debug("cached code is not empty, clearing it.");
+            }
+            cachedCode.clear();
+        }
+
+        loadEventsCodeToCache();
+    }
+
+    /**
+     * get contents of text file directly from the file as a string
+     * @param fileName the file name
+     * @return the text file contents as a single string
+     */
+    public String getCodeFromFile(String fileName) {
+
+        List<String> stringList = getStringList(getEventFileByName(fileName));
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String string : stringList) {
+            stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * get contents of text file directly from the file as a list of strings
+     * @param file the file
+     * @return a list of Strings for the file
+     */
     public List<String> getStringList(File file) {
         List<String> stringList = new ArrayList<String>();
         try {
@@ -165,4 +295,19 @@ public class FileManager {
 
     }
 
+    /**
+     * should we cache the values from the files?
+     * @return true if enabled false if not
+     */
+    public boolean isUsingCache() {
+        return plugin.getConfig().getBoolean("runscript.usecache");
+    }
+
+    /**
+     * is debug mode enabled for the plugin
+     * @return true if enabled, false if not
+     */
+    public boolean isDebugEnabled() {
+        return plugin.getConfig().getBoolean("runscript.debug.enabled");
+    }
 }

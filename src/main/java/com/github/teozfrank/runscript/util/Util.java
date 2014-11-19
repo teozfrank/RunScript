@@ -1,6 +1,8 @@
 package com.github.teozfrank.runscript.util;
 
 import com.github.teozfrank.runscript.main.RunScript;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 /**
  The MIT License (MIT)
@@ -33,5 +35,13 @@ public class Util {
     public static final String eventBlockPath = RunScript.getInstance().getDataFolder() + "/event/block";
     public static final String eventEntityPath = RunScript.getInstance().getDataFolder() + "/event/entity";
     public static final String eventWeatherPath = RunScript.getInstance().getDataFolder() + "/event/weather";
+
+    public static void sendEmptyMsg(CommandSender sender, String message) {
+        sender.sendMessage(message);
+    }
+
+    public static void sendMsg(CommandSender sender, String message) {
+        sender.sendMessage(ChatColor.GOLD + "[RunScript] " +  message);
+    }
 
 }

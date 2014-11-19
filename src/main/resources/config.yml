@@ -1,3 +1,5 @@
+configversion: 1.0
 runscript:
+    usecache: false
     debug:
         enabled: false

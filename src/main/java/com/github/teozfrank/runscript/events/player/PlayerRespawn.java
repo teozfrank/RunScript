@@ -59,17 +59,19 @@ public class PlayerRespawn implements Listener {
             e.printStackTrace();
         }
 
-        List<String> stringList = fm.getStringList(new File(Util.eventPlayerPath, "PlayerRespawnEvent.txt"));
-        StringBuilder stringBuilder = new StringBuilder();
+        String fileName = "PlayerRespawnEvent.txt";
+        String code;
 
-        for(String string: stringList) {
-            stringBuilder.append(string);
+        if(fm.isUsingCache()) {
+            code = fm.getCachedCode(fileName);
+        } else {
+            code = fm.getCodeFromFile(fileName);
         }
 
         try {
-            interpreter.eval(stringBuilder.toString());
+            interpreter.eval(code);
         } catch (EvalError e) {
-            SendConsoleMessage.severe("There was an error parsing PlayerRespawnEvent.txt, please check your code!");
+            SendConsoleMessage.severe("There was an error parsing " + fileName + ", please check your code!");
         }
     }
 

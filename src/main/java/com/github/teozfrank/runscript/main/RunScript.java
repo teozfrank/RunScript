@@ -2,6 +2,7 @@ package com.github.teozfrank.runscript.main;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import com.github.teozfrank.runscript.commands.RSReloadCmd;
 import com.github.teozfrank.runscript.events.block.BlockBreak;
 import com.github.teozfrank.runscript.events.block.BlockBurn;
 import com.github.teozfrank.runscript.events.entity.CreatureSpawn;
@@ -79,6 +80,8 @@ public class RunScript extends JavaPlugin {
 
         //Weather events
         new WeatherChange(this);
+
+        getCommand("rsreload").setExecutor(new RSReloadCmd(this));
     }
 
     /**
@@ -112,5 +115,9 @@ public class RunScript extends JavaPlugin {
 
     public static RunScript getInstance() {
         return instance;
+    }
+
+    public boolean isDebugEnabled() {
+        return getFileManager().isDebugEnabled();
     }
 }
