@@ -69,6 +69,9 @@ public class RunScript extends JavaPlugin {
         new PlayerQuit(this);
         new PlayerRespawn(this);
         new PlayerCommandPreProcess(this);
+        new PlayerPickupItem(this);
+        new PlayerKick(this);
+        new PlayerTeleport(this);
 
         // Entity events
         new CreatureSpawn(this);
