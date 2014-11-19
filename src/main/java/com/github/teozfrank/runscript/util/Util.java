@@ -32,5 +32,6 @@ public class Util {
     public static final String eventPlayerPath = RunScript.getInstance().getDataFolder() + "/event/player";
     public static final String eventBlockPath = RunScript.getInstance().getDataFolder() + "/event/block";
     public static final String eventEntityPath = RunScript.getInstance().getDataFolder() + "/event/entity";
+    public static final String eventWeatherPath = RunScript.getInstance().getDataFolder() + "/event/weather";
 
 }

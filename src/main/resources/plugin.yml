@@ -1,5 +1,5 @@
 name: RunScript
-version: 0.2.3
+version: 0.2.4
 author: teozfrank
 description: run scripts in minecraft using java syntax
 main: com.github.teozfrank.runscript.main.RunScript

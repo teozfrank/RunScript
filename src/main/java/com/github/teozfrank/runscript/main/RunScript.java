@@ -6,6 +6,7 @@ import com.github.teozfrank.runscript.events.block.BlockBreak;
 import com.github.teozfrank.runscript.events.block.BlockBurn;
 import com.github.teozfrank.runscript.events.entity.CreatureSpawn;
 import com.github.teozfrank.runscript.events.player.*;
+import com.github.teozfrank.runscript.events.weather.WeatherChange;
 import com.github.teozfrank.runscript.util.FileManager;
 import com.github.teozfrank.runscript.util.SendConsoleMessage;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -75,6 +76,9 @@ public class RunScript extends JavaPlugin {
 
         // Entity events
         new CreatureSpawn(this);
+
+        //Weather events
+        new WeatherChange(this);
     }
 
     /**

@@ -90,6 +90,7 @@ public class FileManager {
         File eventPlayerDir = new File(Util.eventPlayerPath);
         File eventBlockDir = new File(Util.eventBlockPath);
         File eventEntityDir = new File(Util.eventEntityPath);
+        File eventWeatherDir = new File(Util.eventWeatherPath);
 
         if(!eventDir.exists()) {
             try {
@@ -123,6 +124,14 @@ public class FileManager {
             }
         }
 
+        if(!eventWeatherDir.exists()) {
+            try {
+                eventWeatherDir.mkdir();
+            } catch (SecurityException e) {
+
+            }
+        }
+
         CodeSource src = FileManager.class.getProtectionDomain().getCodeSource();
 
         if(src != null) {
@@ -144,9 +153,10 @@ public class FileManager {
                         if(entryName.endsWith(".txt")) {
                             this.checkAndCreateTextFile(Util.eventEntityPath, entryName);
                         }
-
                     }
-
+                    if(entryName.contains("Weather") && entryName.endsWith(".txt")) {
+                        this.checkAndCreateTextFile(Util.eventWeatherPath, entryName);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
